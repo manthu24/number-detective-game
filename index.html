@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Detective 🔍</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>🔍 Number Detective</h1>
+            <p class="tagline">Can you crack the 4-digit code?</p>
+            <input type="text" id="player-name" placeholder="Enter your spy name...">
+            <button onclick="startGame()">Start Mission 🚀</button>
+        </div>
+
+        <!-- Game Screen (Hidden Initially) -->
+        <div id="game-screen" class="screen hidden">
+            <div class="header">
+                <h2>Agent: <span id="current-player">Anonymous</span></h2>
+                <div class="stats">
+                    <p>⏱️ Time: <span id="timer">0</span>s</p>
+                    <p>🔢 Guesses: <span id="guess-count">0</span></p>
+                </div>
+            </div>
+            
+            <input type="number" id="guess-input" placeholder="Enter 4 digits...">
+            <button onclick="submitGuess()">Decrypt Code 🔓</button>
+            
+            <div id="feedback" class="feedback-grid"></div>
+        </div>
+
+        <!-- Leaderboard (Hidden Initially) -->
+        <div id="leaderboard" class="screen hidden">
+            <h2>🏆 Top Agents</h2>
+            <ul id="leaderboard-list"></ul>
+            <button onclick="showGameScreen()">New Mission 🔄</button>
+        </div>
+    </div>
+
+    <!-- JavaScript File Link -->
+    <script src="script.js"></script>
+</body>
+</html>
