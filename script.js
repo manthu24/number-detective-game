@@ -3,9 +3,9 @@ let playerName = '';
 let guessCount = 0;
 let startTime = 0;
 let timerInterval;
-const MAX_GUESSES = 8; // Maximum allowed guesses
+const MAX_GUESSES = 8; // 8 times guess allowed
 
-// Generate a 4-digit number with unique digits
+//  4-digit  unique digits
 function generateTargetNumber() {
     const digits = [];
     while (digits.length < 4) {
