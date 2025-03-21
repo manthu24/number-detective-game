@@ -3,9 +3,9 @@ let playerName = '';
 let guessCount = 0;
 let startTime = 0;
 let timerInterval;
-const MAX_GUESSES = 8; // 8 times guess allowed
+const MAX_GUESSES = 8; // Maximum allowed guesses
 
-//  4-digit  unique digits
+// Generate a 4-digit number with unique digits
 function generateTargetNumber() {
     const digits = [];
     while (digits.length < 4) {
@@ -84,8 +84,9 @@ function submitGuess() {
     if (feedback === '++++') {
         clearInterval(timerInterval);
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-        const score = Math.round((10000 / (timeTaken + 1)) * (10 - Math.min(guessCount, 10)));
+        const score = calculateScore(timeTaken, guessCount);
         alert(`🎉 Mission accomplished, ${playerName}!\nScore: ${score}`);
+        saveScore(playerName, score, timeTaken, guessCount); // Save score
         showLeaderboard();
     }
 
@@ -97,10 +98,45 @@ function submitGuess() {
     }
 }
 
+// Calculate score
+function calculateScore(time, guesses) {
+    return Math.round((10000 / (time + 1)) * (10 - Math.min(guesses, 10)));
+}
+
+// Save score to backend
+async function saveScore(name, score, time, guesses) {
+    try {
+        const response = await fetch('http://localhost:5000/api/save-score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, score, time, guesses })
+        });
+        const data = await response.json();
+        console.log(data.message);
+    } catch (err) {
+        console.error('Error saving score:', err);
+    }
+}
+
+// Fetch leaderboard from backend
+async function fetchLeaderboard() {
+    try {
+        const response = await fetch('http://localhost:5000/api/leaderboard');
+        const leaderboard = await response.json();
+        const leaderboardList = document.getElementById('leaderboard-list');
+        leaderboardList.innerHTML = leaderboard.map((player, index) => `
+            <li>${index + 1}. ${player.name} - Score: ${player.score}</li>
+        `).join('');
+    } catch (err) {
+        console.error('Error fetching leaderboard:', err);
+    }
+}
+
 // Show leaderboard
 function showLeaderboard() {
     document.getElementById('game-screen').classList.add('hidden');
     document.getElementById('leaderboard').classList.remove('hidden');
+    fetchLeaderboard(); // Fetch and display leaderboard
 }
 
 // Reset game
